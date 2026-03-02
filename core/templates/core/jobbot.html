@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Talk to JobBot | JobNet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #eef2f7;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .chat-wrapper {
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #1e40af;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e40af;
+      margin-bottom: 20px;
+    }
+
+    #chat-box {
+      border: 1px solid #ccc;
+      height: 300px;
+      overflow-y: auto;
+      padding: 15px;
+      border-radius: 10px;
+      background: #f9fafb;
+      margin-bottom: 15px;
+    }
+
+    .user-msg {
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+
+    .bot-msg {
+      color: #065f46;
+      margin-bottom: 8px;
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      background: #1e40af;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e3a8a;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-wrapper">
+    <a href="/" class="back-button">← Back to Home</a>
+    <h2>🤖 Talk to <span style="color:#2563eb;">JobBot</span></h2>
+
+    <div id="chat-box"></div>
+
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="Type your job question..." autocomplete="off">
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('chat-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const input = document.getElementById('user-input');
+      const chatBox = document.getElementById('chat-box');
+      const question = input.value.trim();
+      if (!question) return;
+
+      chatBox.innerHTML += `<div class="user-msg"><b>You:</b> ${question}</div>`;
+      const lowerQ = question.toLowerCase();
+
+      const jobInfo = {
+        'python developer': {
+          desc: "🐍 A Python Developer builds backend logic using Python, Django, or Flask. Backend superhero stuff! 💻",
+          skills: "🛠️ Skills: Python, Django, APIs, Git, SQL",
+          tip: "💡 Tip: Push cool Python projects on GitHub — recruiters love real code!"
+        },
+        'frontend developer': {
+          desc: "🎨 A Frontend Developer creates beautiful UIs with HTML, CSS, JavaScript. Basically the web stylist ✨",
+          skills: "🛠️ Skills: HTML, CSS, JavaScript, React",
+          tip: "💡 Tip: Build a portfolio site with animations. It says 'hire me!' without saying it 😉"
+        },
+        'data analyst': {
+          desc: "📊 A Data Analyst turns boring numbers into exciting business stories. Kinda like Excel meets Sherlock 🕵️‍♂️",
+          skills: "🛠️ Skills: Excel, SQL, Pandas, Power BI/Tableau",
+          tip: "💡 Tip: Learn data storytelling. It’s what makes boring dashboards sparkle ✨"
+        }
+      };
+
+      let matchedJob = Object.keys(jobInfo).find(job => lowerQ.includes(job));
+      let reply = "";
+
+      if (["hi", "hello", "hey", "hola", "hai"].includes(lowerQ)) {
+        reply = "👋 Hello! I'm <b>JobBot</b>, your career buddy. Ask me about jobs, resumes, interviews, or internships! 💼";
+      } 
+      else if (matchedJob) {
+        const job = jobInfo[matchedJob];
+        if (lowerQ.includes("tip")) reply = job.tip;
+        else if (lowerQ.includes("skill")) reply = job.skills;
+        else reply = job.desc;
+      } 
+      else if (lowerQ.includes("resume")) {
+        reply = "📄 Resume Tip: Put your top 3 skills at the top! Let the recruiter spot the gold instantly ✨";
+      } 
+      else if (lowerQ.includes("interview")) {
+        reply = "🎤 Interview Tip: Practice with a friend or in front of a mirror. Confidence makes a big difference 💪";
+      } 
+      else if (lowerQ.includes("internship")) {
+        reply = "🎓 Internships are like trial jobs. Do more mini projects, learn fast, and stand out!";
+      } 
+      else if (lowerQ.includes("career") || lowerQ.includes("path")) {
+        reply = "🌱 Career Tip: Follow your curiosity. Consistency + curiosity beats trends.";
+      } 
+      else if (lowerQ.includes("job") || lowerQ.includes("apply") || lowerQ.includes("hiring")) {
+        reply = "📝 Pro Tip: Tailor your resume to each job. Use keywords from the job description!";
+      } 
+      else {
+        reply = "🤔 I'm still learning that! Try asking like: <i>‘skills for data analyst’</i> or <i>‘tip for frontend developer’</i> 👨‍💻";
+      }
+
+      chatBox.innerHTML += `<div class="bot-msg"><b>JobBot:</b> ${reply}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+      input.value = '';
+    });
+  </script>
+</body>
+</html>

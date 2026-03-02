@@ -1,0 +1,80 @@
+<!-- 🌟 Center Content -->
+<div class="center-box">
+
+  <!-- ✨ Glowing Logo Centered -->
+  <div class="main-logo">🔍<span class="glow">JobNet Portal</span></div>
+
+  <!-- 🎯 Welcome Message -->
+  <h1 class="heading">Welcome to <span class="highlight">JobNet</span></h1>
+  <p class="subheading">Your smart career buddy for jobs, internships & AI help</p>
+
+<!-- 👤 Profile Circle Top Right -->
+{% if user.is_authenticated %}
+  <div style="position:absolute; top:20px; right:30px;">
+    <div onclick="toggleProfile()" style="width:50px;height:50px;border-radius:50%;background:#2980b9;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;">
+      {{ user.username|slice:":1"|upper }}
+    </div>
+    <div id="profilePanel" style="display:none;position:absolute;top:60px;right:0;background:#fff;padding:15px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.2);width:200px;">
+      <p><b>{{ user.username }}</b></p>
+      <p style="font-size:14px;color:gray;">{{ user.email }}</p>
+
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" style="width:100%;padding:8px;background:#e74c3c;color:white;border:none;border-radius:8px;cursor:pointer;">Logout</button>
+      </form>
+    </div>
+  </div>
+{% endif %}
+
+
+<script>
+  function toggleProfile() {
+    const panel = document.getElementById("profilePanel");
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+  }
+</script>
+
+  <!-- 🚀 Navigation Buttons -->
+  <a href="{% url 'upload_resume' %}" class="btn btn-job">💼 Find Your Job</a>
+  <a href="{% url 'intern_upload' %}" class="btn">🎓 Find Internships</a>
+  <a href="{% url 'jobbot' %}" class="btn btn-chat">🤖 Ask JobBot</a>
+
+  {% if user.is_superuser %}
+  <a href="/admin/" class="btn btn-admin">⚙️ Admin Panel</a>
+  {% endif %}
+</div>
+ <!-- 🎨 STYLES -->
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
+}
+
+.main-logo { font-size: 2.8rem; font-weight: 700; margin-bottom: 25px; text-align: center; }
+.glow { color: #ffffff; animation: glowPulse 2s ease-in-out infinite; text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
+
+@keyframes glowPulse {
+  0%,100% { text-shadow: 0 0 10px #00ffff; }
+  50% { text-shadow: 0 0 20px #00ffff; }
+}
+
+/* Center Box */
+.center-box { min-height: 100vh; padding: 120px 20px 60px; text-align: center; display:flex; flex-direction: column; align-items:center; }
+
+/* Text */
+.heading { font-size: 3rem; font-weight: bold; }
+.highlight { color: #ffcd3c; }
+.subheading { font-size:1.2rem; margin-bottom:30px; }
+
+/* Buttons */
+.btn { display:block; padding:14px 28px; margin:10px; font-size:1.1rem; border-radius:10px; text-decoration:none; color:white; font-weight:500; transition:0.3s; width:230px; }
+.btn-job { background: #4caf50; } .btn-job:hover { background: #388e3c; }
+.btn-internship { background: #2e7d32; } .btn-internship:hover { background: #1b5e20; }
+.btn-chat { background: #1e40af; } .btn-chat:hover { background: #1e3a8a; }
+.btn-admin { background: #6a1b9a; box-shadow:0 4px 10px rgba(106,27,154,0.4); }
+.btn-admin:hover { background: #4a148c; transform: translateY(-2px); box-shadow: 0 6px 14px rgba(106,27,154,0.6); }
+.btn:hover { transform: translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,0.2); }
+</style>
